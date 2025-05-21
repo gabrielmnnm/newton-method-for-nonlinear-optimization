@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 class Function:
     def __init__(self):
         self.x1, self.x2 = sp.symbols("x1 x2")
-        self.f = self.x1 - self.x2 + 2 * (self.x1**2) + 2 * self.x1 * self.x2 + (self.x2**2)
+        self.f = (self.x1 - 1)**2 + 2 * (2 * self.x2**2 - self.x1)**2
+        # self.f = self.x1 - self.x2 + 2 * (self.x1**2) + 2 * self.x1 * self.x2 + (self.x2**2)
 
     #Vetor gradiente simbolico
     def sym_partial_derivatives(self):
@@ -47,6 +48,7 @@ class Matrix_operations:
         self.func = func
 
     #create a methods to build the gradient and hessian from here
+    #create a test to see if the matrix determinant is different than 0 (it must be)
     def num_inverse_matrix(self, x1, x2):
         a11, a12, a21, a22 = self.func.num_second_partial_derivatives(x1, x2)
         A = np.array([[a11, a12], [a21, a22]])
@@ -84,24 +86,31 @@ npt = New_point(func, direc)
 
 x1, x2 = 0, 0
 grad_x, grad_y = func.num_partial_derivatives(x1, x2)
+print(grad_x, grad_y)
+
+a11, a12, a21, a22 = func.num_second_partial_derivatives(x1, x2)
+A = np.array([[a11, a12], [a21, a22]])
+res2 = np.linalg.det(A)
+print(res2)
+
 iterations = 0 
 
-if grad_x == 0 and grad_y == 0:
-    print("Already on a minimum")
+# if grad_x == 0 and grad_y == 0:
+#     print("Already on a minimum")
 
-else:
-    while grad_x and grad_y != 0:
-        new_x1, new_x2 = npt.new_point(x1, x2)
-        print(new_x1, new_x2)
-        grad_x, grad_y = func.num_partial_derivatives(new_x1, new_x2)
-        iterations = iterations + 1
+# else:
+#     while grad_x or grad_y != 0:
+#         new_x1, new_x2 = npt.new_point(x1, x2)
+#         print(new_x1, new_x2)
+#         grad_x, grad_y = func.num_partial_derivatives(new_x1, new_x2)
+#         print(grad_x, grad_y)
+#         iterations = iterations + 1
 
-        # print(grad_x, grad_y)
 
-    if iterations == 1:
-        print(f"Sucessfully ended with {iterations} iteration\nNewton's method works for this function")
-    else:
-        print(f"Ended with {iterations} iterations")
+#     if iterations == 1:
+#         print(f"Sucessfully ended with {iterations} iteration\nNewton's method works for this function")
+#     else:
+#         print(f"Ended with {iterations} iterations")
 
 
 ##TESTES
