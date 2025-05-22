@@ -47,8 +47,9 @@ class Matrix_operations:
     def __init__(self, func: Function):
         self.func = func
 
-    #create a methods to build the gradient and hessian from here
-    #create a test to see if the matrix determinant is different than 0 (it must be)
+    #criar um método para construir o gradiente e a hessiana por aqui
+    #criar um teste para ver se o determinante da matriz é diferente de 0 (tem que ser)
+
     def num_inverse_matrix(self, x1, x2):
         a11, a12, a21, a22 = self.func.num_second_partial_derivatives(x1, x2)
         A = np.array([[a11, a12], [a21, a22]])
@@ -84,33 +85,35 @@ matr = Matrix_operations(func)
 direc = Direction(func, matr)
 npt = New_point(func, direc)
 
-x1, x2 = 0, 0
+x1, x2 = -2.6, -6.3
 grad_x, grad_y = func.num_partial_derivatives(x1, x2)
-print(grad_x, grad_y)
+print(f"Partial derivatives (x and y): {grad_x, grad_y}")
 
 a11, a12, a21, a22 = func.num_second_partial_derivatives(x1, x2)
 A = np.array([[a11, a12], [a21, a22]])
-res2 = np.linalg.det(A)
-print(res2)
+det = np.linalg.det(A)
+print(f"Hessian determinant: {det}")
 
 iterations = 0 
 
-# if grad_x == 0 and grad_y == 0:
-#     print("Already on a minimum")
+if grad_x == 0 and grad_y == 0:
+    print("Already on a minimum")
 
-# else:
-#     while grad_x or grad_y != 0:
-#         new_x1, new_x2 = npt.new_point(x1, x2)
-#         print(new_x1, new_x2)
-#         grad_x, grad_y = func.num_partial_derivatives(new_x1, new_x2)
-#         print(grad_x, grad_y)
-#         iterations = iterations + 1
+else:
+    while grad_x or grad_y != 0:
+        new_x1, new_x2 = npt.new_point(x1, x2)
+        print(f"new points: {new_x1, new_x2}")
+      
+        grad_x, grad_y = func.num_partial_derivatives(new_x1, new_x2)
+        print(f"New gradient: {grad_x, grad_y}")
+      
+        iterations = iterations + 1
+        print(f"Iteration: {iterations}")
 
-
-#     if iterations == 1:
-#         print(f"Sucessfully ended with {iterations} iteration\nNewton's method works for this function")
-#     else:
-#         print(f"Ended with {iterations} iterations")
+    if iterations == 1:
+        print(f"Sucessfully ended with {iterations} iteration\nNewton's method works for this function")
+    else:
+        print(f"Ended with {iterations} iterations")
 
 
 ##TESTES
